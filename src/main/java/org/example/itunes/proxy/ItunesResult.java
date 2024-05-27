@@ -1,6 +1,8 @@
 package org.example.itunes.proxy;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record ItunesResult(String trackName,
                            String artistName) {
 }

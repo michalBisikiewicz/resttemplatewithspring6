@@ -1,5 +1,6 @@
 package org.example.sampleshawnmendes.proxy;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
+@Log4j2
 public class SampleShawnMendesServerProxy {
 
     private final RestTemplate restTemplate;
@@ -34,7 +36,7 @@ public class SampleShawnMendesServerProxy {
                 .port(port)
                 .path("/shawn/songs");
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("requestId", "headerValue");
+        httpHeaders.add("requestId", "headerValuePost");
         SampleShawnMendesRequest requestBody = new SampleShawnMendesRequest("Another Day");
         HttpEntity<SampleShawnMendesRequest> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
         try {
@@ -46,9 +48,9 @@ public class SampleShawnMendesServerProxy {
             );
             return response.getBody();
         } catch (RestClientResponseException exception) {
-            System.out.println(exception.getStatusText() + " " + exception.getStatusCode().value());
+            log.error(exception.getStatusText() + " " + exception.getStatusCode().value());
         } catch (RestClientException exception) {
-            System.out.println(exception.getMessage());
+            log.error(exception.getMessage());
         }
         return null;
     }
@@ -61,8 +63,8 @@ public class SampleShawnMendesServerProxy {
                 .port(port)
                 .path("/shawn/songs");
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("requestId", "headerValue");
-        SampleShawnMendesRequest requestBody = new SampleShawnMendesRequest("hahahah123");
+        httpHeaders.add("requestId", "headerValueGet");
+        SampleShawnMendesRequest requestBody = new SampleShawnMendesRequest("Stitches");
         HttpEntity<SampleShawnMendesRequest> httpEntity = new HttpEntity<>(requestBody, httpHeaders);
         try {
             ResponseEntity<String> response = restTemplate.exchange(
@@ -73,9 +75,9 @@ public class SampleShawnMendesServerProxy {
             );
             return response.getBody();
         } catch (RestClientResponseException exception) {
-            System.out.println(exception.getStatusText() + " " + exception.getStatusCode().value());
+            log.error(exception.getStatusText() + " " + exception.getStatusCode().value());
         } catch (RestClientException exception) {
-            System.out.println(exception.getMessage());
+            log.error(exception.getMessage());
         }
         return null;
     }
@@ -97,9 +99,9 @@ public class SampleShawnMendesServerProxy {
             );
             return response.getBody();
         } catch (RestClientResponseException exception) {
-            System.out.println(exception.getStatusText() + " " + exception.getStatusCode().value());
+            log.error(exception.getStatusText() + " " + exception.getStatusCode().value());
         } catch (RestClientException exception) {
-            System.out.println(exception.getMessage());
+            log.error(exception.getMessage());
         }
         return null;
     }

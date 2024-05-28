@@ -1,23 +1,23 @@
 package org.example;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.example.itunes.service.ItunesService;
-import org.example.sampleshawnmendes.service.ShawnMendesService;
+import lombok.extern.log4j.Log4j2;
+import org.example.songviewer.Song;
+import org.example.songviewer.SongViewerService;
 import org.springframework.stereotype.Component;
 
-@Component
-public class MainApplicationRunner {
-    private final ItunesService itunesService;
-    private final ShawnMendesService shawnMendesService;
+import java.util.List;
 
-    //robimy tutaj wstrzykiwanie przez konstruktor, także adnotacja @Autowired nie jest potrzebna
-    public MainApplicationRunner(ItunesService itunesService, ShawnMendesService shawnMendesService) {
-        this.itunesService = itunesService;
-        this.shawnMendesService = shawnMendesService;
+@Component
+@Log4j2
+public class MainApplicationRunner {
+    private final SongViewerService songViewerService;
+
+    public MainApplicationRunner(SongViewerService songViewerService) {
+        this.songViewerService = songViewerService;
     }
 
-    public void run() throws JsonProcessingException {
-         itunesService.fetchShawnMendesSongs();
-         shawnMendesService.testClient();
+    public void run() {
+        List<Song> songs = songViewerService.viewAllSongs();
+        log.info(songs);
      }
 }

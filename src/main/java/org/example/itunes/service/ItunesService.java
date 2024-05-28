@@ -1,11 +1,14 @@
 package org.example.itunes.service;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.log4j.Log4j2;
 import org.example.itunes.proxy.ItunesProxy;
 import org.example.itunes.proxy.ItunesResponse;
+import org.example.itunes.proxy.ItunesResult;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @Log4j2
@@ -19,12 +22,15 @@ public class ItunesService {
         this.itunesMapper = itunesMapper;
     }
 
-    public void fetchShawnMendesSongs() {
+    public List<ItunesResult> fetchShawnMendesSongs() {
         String json = itunesClient.makeGetRequest("shawnmendes", 3);
-        if (json != null) {
-            ItunesResponse shawnMendesResponse = itunesMapper.mapJsonItunesResponse(json);
-            log.info(shawnMendesResponse);
+        if (json == null) {
+            log.error("jsonSogns was null");
+            return Collections.emptyList();
         }
+        ItunesResponse shawnMendesResponse = itunesMapper.mapJsonItunesResponse(json);
+        log.info("ItunesService fetched: " + shawnMendesResponse);
+        return shawnMendesResponse.results();
     }
 
 

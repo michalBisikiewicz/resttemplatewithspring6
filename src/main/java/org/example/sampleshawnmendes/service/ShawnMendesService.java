@@ -16,7 +16,7 @@ public class ShawnMendesService {
     private final SampleShawnMendesServerProxy sampleShawnMendesServerClient;
     private final ShawnMendesServiceMapper shawnMendesServiceMapper;
 
-//    @Autowired
+    //    @Autowired
     //nie używamy tutaj @Autowired - czyli że kontakst sam szuka Beanów - zostanie to automatycznie wstrzykniętę od chyba
     //8 wersji Springa
     public ShawnMendesService(SampleShawnMendesServerProxy sampleShawnMendesServerClient, ShawnMendesServiceMapper shawnMendesServiceMapper) {
@@ -24,22 +24,14 @@ public class ShawnMendesService {
         this.shawnMendesServiceMapper = shawnMendesServiceMapper;
     }
 
-    public void testClient() {
-        String postRequest = sampleShawnMendesServerClient.makePostRequest();
-        if (postRequest != null) {
-            SampleServerShawnMendesResponse sampleShawnMendesResponse = shawnMendesServiceMapper.mapJsonToSampleShawnMendesResponse(postRequest);
-            log.info(sampleShawnMendesResponse);
+    public String fetchAllShawnMendesSongs() {
+        String jsonSongs = sampleShawnMendesServerClient.makeGetRequest();
+        if (jsonSongs == null) {
+            log.error("jsonSongs was null");
+            return "";
         }
-        String getJsonSampleShawnMendesServer = sampleShawnMendesServerClient.makeGetRequest();
-        if (getJsonSampleShawnMendesServer != null) {
-            SampleServerShawnMendesResponse sampleShawnMendesResponse = shawnMendesServiceMapper.mapJsonToSampleShawnMendesResponse(getJsonSampleShawnMendesServer);
-            log.info(sampleShawnMendesResponse);
-        }
-        sampleShawnMendesServerClient.makeDeleteRequest("0");
-        String getJsonSampleShawnMendesServer2 = sampleShawnMendesServerClient.makeGetRequest();
-        if (getJsonSampleShawnMendesServer2 != null) {
-            SampleServerShawnMendesResponse sampleShawnMendesResponse = shawnMendesServiceMapper.mapJsonToSampleShawnMendesResponse(getJsonSampleShawnMendesServer2);
-            log.info(sampleShawnMendesResponse);
-        }
+        SampleServerShawnMendesResponse sampleServerShawnMendesResponse = shawnMendesServiceMapper.mapJsonToSampleShawnMendesResponse(jsonSongs);
+        log.info("SampleMendesService fetched: " + sampleServerShawnMendesResponse);
+        return sampleServerShawnMendesResponse.message();
     }
 }

@@ -1,7 +1,5 @@
 package org.example.songviewer;
 
-import org.example.itunes.service.ItunesService;
-import org.example.sampleshawnmendes.service.ShawnMendesService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,21 +8,18 @@ import java.util.List;
 @Service
 public class SongViewerService {
 
-    private final ItunesService itunesService;
+    //dzięki List<SongFetchable> będzie wstrzykiwana cała lista serwisów używająca tego Interfejsu
+    private final List<SongFetchable> songFetchable;
 
-    private final ShawnMendesService shawnMendesService;
-
-    public SongViewerService(ItunesService itunesService, ShawnMendesService shawnMendesService) {
-        this.itunesService = itunesService;
-        this.shawnMendesService = shawnMendesService;
+    public SongViewerService(List<SongFetchable> songFetchable) {
+        this.songFetchable = songFetchable;
     }
 
     public List<Song> viewAllSongs() {
-        List<Song> itunesResults = itunesService.fetchAllSongs();
-        List<Song> songs = shawnMendesService.fetchAllSongs();
         List<Song> songsToView = new ArrayList<>();
-        songsToView.addAll(itunesResults);
-        songsToView.addAll(songs);
+        songFetchable.forEach(
+                songService -> songsToView.addAll(songService.fetchAllSongs())
+        );
         return songsToView;
     }
 

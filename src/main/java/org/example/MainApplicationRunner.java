@@ -16,7 +16,7 @@ public class MainApplicationRunner {
         this.songViewerService = songViewerService;
     }
 
-    public void run() {
+    public void start() {
         List<Song> songs = songViewerService.viewAllSongs();
         log.info(songs);
      }
